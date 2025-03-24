@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:go_router_01/model/navigation_action.dart';
-import 'package:go_router_01/pages/cave_entry_page.dart';
 import 'package:go_router_01/pages/cave_room_page.dart';
 import 'package:go_router_01/pages/cave_treasure_page.dart';
 
@@ -38,29 +36,71 @@ final _routes = <RouteBase>[
     name: 'entry',
     path: '/',
     builder:
-        (context, state) => CaveEntryPage(
-          enter: NavigationAction(
-            'Enter',
-            () => context.caveRouter.goToRoom('room'),
-          ),
-        ),
-  ),
-  GoRoute(
-    name: 'treasure',
-    path: '/treasure',
-    builder: (context, state) => CaveTreasurePage(),
-  ),
-  GoRoute(
-    name: 'room',
-    path: '/room',
-    builder:
         (context, state) => CaveRoomPage(
-          name: 'Room',
-          left: NavigationAction('Left', context.caveRouter.goToEntry),
           down: [
-            NavigationAction('Down 1', () => context.caveRouter.goToEntry()),
-            NavigationAction('Down 2', () => context.caveRouter.goToTreasure()),
+            () => context.caveRouter.goToRoom('A'),
+            () => context.caveRouter.goToRoom('B'),
+            () => context.caveRouter.goToRoom('C'),
           ],
         ),
+    routes: [
+      GoRoute(
+        name: 'A',
+        path: '/A',
+        builder: (context, state) => CaveRoomPage(),
+      ),
+      GoRoute(
+        name: 'B',
+        path: '/B',
+        builder:
+            (context, state) => CaveRoomPage(
+              right: () => context.caveRouter.goToRoom('C'),
+              down: [
+                () => context.caveRouter.goToRoom('D'),
+                () => context.caveRouter.goToRoom('E'),
+              ],
+            ),
+        routes: [
+          GoRoute(
+            name: 'D',
+            path: '/D',
+            builder:
+                (context, state) =>
+                    CaveRoomPage(right: () => context.caveRouter.goToRoom('E')),
+          ),
+          GoRoute(
+            name: 'E',
+            path: '/E',
+            builder:
+                (context, state) =>
+                    CaveRoomPage(left: () => context.caveRouter.goToRoom('D')),
+          ),
+        ],
+      ),
+      GoRoute(
+        name: 'C',
+        path: '/C',
+        builder:
+            (context, state) => CaveRoomPage(
+              left: () => context.caveRouter.goToRoom('B'),
+              down: [
+                () => context.caveRouter.goToTreasure(),
+                () => context.caveRouter.goToRoom('F'),
+              ],
+            ),
+        routes: [
+          GoRoute(
+            name: 'treasure',
+            path: '/treasure',
+            builder: (context, state) => CaveTreasurePage(),
+          ),
+          GoRoute(
+            name: 'F',
+            path: '/F',
+            builder: (context, state) => CaveRoomPage(),
+          ),
+        ],
+      ),
+    ],
   ),
 ];
