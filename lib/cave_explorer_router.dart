@@ -36,70 +36,13 @@ final _routes = <RouteBase>[
     name: 'entry',
     path: '/',
     builder:
-        (context, state) => CaveRoomPage(
-          down: [
-            () => context.caveRouter.goToRoom('A'),
-            () => context.caveRouter.goToRoom('B'),
-            () => context.caveRouter.goToRoom('C'),
-          ],
-        ),
+        (context, state) =>
+            CaveRoomPage(down: [() => context.caveRouter.goToTreasure()]),
     routes: [
       GoRoute(
-        name: 'A',
-        path: '/A',
-        builder: (context, state) => CaveRoomPage(),
-      ),
-      GoRoute(
-        name: 'B',
-        path: '/B',
-        builder:
-            (context, state) => CaveRoomPage(
-              right: () => context.caveRouter.goToRoom('C'),
-              down: [
-                () => context.caveRouter.goToRoom('D'),
-                () => context.caveRouter.goToRoom('E'),
-              ],
-            ),
-        routes: [
-          GoRoute(
-            name: 'D',
-            path: '/D',
-            builder:
-                (context, state) =>
-                    CaveRoomPage(right: () => context.caveRouter.goToRoom('E')),
-          ),
-          GoRoute(
-            name: 'E',
-            path: '/E',
-            builder:
-                (context, state) =>
-                    CaveRoomPage(left: () => context.caveRouter.goToRoom('D')),
-          ),
-        ],
-      ),
-      GoRoute(
-        name: 'C',
-        path: '/C',
-        builder:
-            (context, state) => CaveRoomPage(
-              left: () => context.caveRouter.goToRoom('B'),
-              down: [
-                () => context.caveRouter.goToTreasure(),
-                () => context.caveRouter.goToRoom('F'),
-              ],
-            ),
-        routes: [
-          GoRoute(
-            name: 'treasure',
-            path: '/treasure',
-            builder: (context, state) => CaveTreasurePage(),
-          ),
-          GoRoute(
-            name: 'F',
-            path: '/F',
-            builder: (context, state) => CaveRoomPage(),
-          ),
-        ],
+        name: 'treasure',
+        path: '/treasure',
+        builder: (context, state) => CaveTreasurePage(),
       ),
     ],
   ),
